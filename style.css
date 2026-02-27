@@ -1,11 +1,11 @@
 /* ===== CSS Variables للألوان ===== */
 :root {
-    --bg-primary: #f8f9fa;
+    --bg-primary: #f3f0db;
     --bg-secondary: #ffffff;
     --text-primary: #1a1a1a;
     --text-secondary: #666666;
-    --accent-color: #e2d4b6;
-    --accent-light: #f1ebd8;
+    --accent-color: #91826b;
+    --accent-light: #b7a487;
     --shadow-color: rgba(0, 0, 0, 0.08);
     --border-color: #e5e7eb;
 }
@@ -39,6 +39,34 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    overflow-x: hidden;
+}
+
+/* ===== Ramadan Background ===== */
+.ramadan-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/pattern.png');
+    background-repeat: repeat;
+    background-size: 350px;
+    z-index: -1;
+    pointer-events: none;
+    transition: filter 0.5s ease, opacity 0.5s ease;
+}
+
+/* خلفية رمضان - الوضع الداكن */
+body.dark-theme .ramadan-background {
+    opacity: 0.37;
+    filter: brightness(1.4) contrast(1.1);
+}
+
+/* خلفية رمضان - الوضع الفاتح */
+body:not(.dark-theme) .ramadan-background {
+    filter: invert(1) hue-rotate(180deg) brightness(0.6) contrast(1.3);
+    opacity: 0.35;
 }
 
 /* ===== Theme Toggle Button ===== */
@@ -64,10 +92,11 @@ body {
 
 .theme-toggle:hover {
     transform: scale(1.1);
-    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-/* ===== Profile Card ===== */
+/* ===== Profile Card - القاعدة الأساسية ===== */
+/* هنا لا نضع أي background-image حتى لا يتعارض مع قواعد الـ light/dark */
 .profile-container {
     background-color: var(--bg-secondary);
     border-radius: 20px;
@@ -77,20 +106,42 @@ body {
     box-shadow: 0 10px 40px var(--shadow-color);
     text-align: center;
     animation: slideUp 0.6s ease-out;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Light Mode - نقش هادئ */
+body:not(.dark-theme) .profile-container {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
+        url('images/pattern2.jpg');
+    background-blend-mode: normal;
+    background-size: 200px;
+}
+
+/* Dark Mode - نقش واضح فوق الخلفية الغامقة */
+body.dark-theme .profile-container {
+    background-image: linear-gradient(rgba(30, 41, 59, 0.80), rgba(30, 41, 59, 0.80)),
+        url('images/pattern2.jpg');
+    background-blend-mode: normal;
+    background-size: 200px;
+    /* تمت إزالة filter: brightness لأنه كان يؤثر سلباً على النصوص والصور */
+}
+
+/* ===== Animation ===== */
 @keyframes slideUp {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
+/* ===== Profile Image ===== */
 .profile-image {
     width: 120px;
     height: 120px;
@@ -100,12 +151,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 60px;
-    color: white;
     overflow: hidden;
+    border: 3px solid var(--accent-color);
 }
 
-
+/* ===== Profile Text ===== */
 .profile-name {
     font-size: 28px;
     font-weight: 700;
@@ -121,15 +171,17 @@ body {
 .profile-bio {
     color: var(--text-secondary);
     line-height: 1.6;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 }
 
+/* ===== Divider ===== */
 .divider {
     height: 1px;
     background-color: var(--border-color);
     margin: 30px 0;
 }
 
+/* ===== Social Links ===== */
 .social-links {
     display: flex;
     justify-content: center;
@@ -153,4 +205,5 @@ body {
     background-color: var(--accent-color);
     color: white;
     transform: translateY(-5px);
+    box-shadow: 0 5px 15px var(--shadow-color);
 }
